@@ -155,22 +155,25 @@ namespace mdt112_assignment2
         public static float ComputeMaximumSellPrice( List<Garbage> garbageList ){
             //  NOTE: Read more on this link https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/types/casting-and-type-conversions
             float totalPrice = 0;
-            // 560 + 264 + 15 + 0.75 + 144.6
             foreach (var garbage in garbageList)
             {
+                Console.WriteLine("Total price is: {0}", totalPrice);
                 if (garbage is IDisassemblable)
                 {
                     totalPrice -= ((IDisassemblable)garbage).GetDisassembleCost();
+                    Console.WriteLine("Disassemble cost for {0} is {1}", garbage.Label, ((IDisassemblable)garbage).GetDisassembleCost());
+                    Console.WriteLine("Now have {0} left", totalPrice);
                     foreach (var disassembleItem in ((ElectronicsGarbage)garbage).Disassemble())
                     {
                         totalPrice += disassembleItem.GetSellPrice();
-                        Console.WriteLine("Sell {0} current price: {1}", disassembleItem.Label, totalPrice);
+                        Console.WriteLine("Sell {0} for {1}, now have : {2}", disassembleItem.Label, disassembleItem.GetSellPrice(), totalPrice);
                     }
                 } else if (garbage is ISellable)
                 {
                     totalPrice += ((ISellable)garbage).GetSellPrice();
+                    Console.WriteLine("Sell {0} for {1}, now have : {2}", garbage.Label, ((ISellable)garbage).GetSellPrice(), totalPrice);
                 }
-                Console.WriteLine("Sell {0} current price: {1}", garbage.Label, totalPrice);
+                Console.WriteLine("Sell {0} finish", garbage.Label);
             }
             return totalPrice;
         }
